@@ -1,17 +1,26 @@
 import cv2
 from cam import hud
 from cam.video_lib import *
+from globals import *
+import tlm
 
 
 def camThread():
-    URL = "http://192.168.137.118"
+    URL = "http://192.168.137.24"
     AWB = True
     phi=0
     theta=0
     cap = cv2.VideoCapture(0)
-    # cap = cv2.VideoCapture(URL + ":81/stream")
-    
+    cap = cv2.VideoCapture(URL + ":81/stream")
+    set_resolution(URL, index=8, verbose=True)
+
     while True:
+        while not udpRecQue.empty():
+            ahrs = udpRecQue.get()
+            # ahrs = tlm.dataAHRS(ahrs)
+            phi = ahrs.phi*57.0
+            theta = ahrs.theta*57.0
+
         if cap.isOpened():
             ret, frame = cap.read()
             frame = hud.drawHor(frame,-theta,-phi)
