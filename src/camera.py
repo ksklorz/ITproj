@@ -2,11 +2,12 @@ import cv2
 from cam import hud
 from cam.video_lib import *
 from globals import *
+from cam import video_lib
 import tlm
 
 
 def camThread():
-    URL = "http://192.168.137.24"
+    URL = "http://192.168.137.22"
     AWB = True
     phi=0
     theta=0
@@ -24,6 +25,7 @@ def camThread():
         if cap.isOpened():
             ret, frame = cap.read()
             frame = hud.drawHor(frame,-theta,-phi)
+            frame = video_lib.stabilize(frame,ahrs,.1)
             cv2.imshow("frame", frame)
             
         key = cv2.waitKey(1)
