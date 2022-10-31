@@ -1,5 +1,7 @@
 import tkinter as tk
 
+from globals import *
+
 
 def threadGUI():
     gui = GUI()
@@ -7,31 +9,38 @@ def threadGUI():
     
 class GUI:
     def __init__(self):
-        form = tk.Tk()
-        form.resizable(width=False, height=False)
-        form.title("proj")
+        self.form = tk.Tk()
+        self.form.resizable(width=False, height=False)
+        self.form.title("proj")
 
         ################
-        frm_coeff = tk.Frame(master = form)
-        lbl_coeff = tk.Label(
-            master=frm_coeff,
+        self.frm_coeff = tk.Frame(master = self.form)
+        self.lbl_coeff = tk.Label(
+            master=self.frm_coeff,
             text="coeff.:"
         )
 
-        ent_coeff = tk.Entry(
-            master=frm_coeff,
+        self.ent_coeff = tk.Entry(
+            master=self.frm_coeff,
             width=7 
         )
-        ent_coeff.grid(row=0,column=1, sticky='w')
-        lbl_coeff.grid(row=0,column=0, sticky="e")
+        self.ent_coeff.grid(row=0,column=1, sticky='w')
+        self.lbl_coeff.grid(row=0,column=0, sticky="e")
         ################
 
-        chk_stab = tk.Checkbutton(
-            text="stabilizacja"
+        self.chk_stab = tk.Checkbutton(
+            text="stabilizacja",
+            command=self.chk_stabChange
         )
 
-        frm_coeff.grid(row=0, column=0, padx=10)
-        chk_stab.grid(row=1,column=0, padx=10)
+        self.frm_coeff.grid(row=0, column=0, padx=10)
+        self.chk_stab.grid(row=1,column=0, padx=10)
 
 
-        form.mainloop()
+        self.form.mainloop()
+
+    def chk_stabChange(self):
+        message = self.ent_coeff.get()
+        cmdGui.put(message)
+    
+
