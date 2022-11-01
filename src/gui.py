@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 import tkinter as tk
 
 from globals import *
@@ -28,8 +29,11 @@ class GUI:
         self.lbl_coeff.grid(row=0,column=0, sticky="e")
         ################
 
+        self.isStab = tk.BooleanVar()
         self.chk_stab = tk.Checkbutton(
             text="stabilizacja",
+            variable= self.isStab,
+            onvalue=True, offvalue=False,
             command=self.chk_stabChange
         )
 
@@ -40,7 +44,7 @@ class GUI:
         self.form.mainloop()
 
     def chk_stabChange(self):
-        message = self.ent_coeff.get()
-        cmdGui.put(message)
+        stabCoeff.isStab = self.isStab.get()
+        print(stabCoeff.isStab)
     
 

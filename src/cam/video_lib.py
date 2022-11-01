@@ -53,23 +53,27 @@ def translate(frame, psi, theta):
         [0,1,y]
     ], dtype=np.float32)
     return cv2.warpAffine(frame,M,(w,h))
+class stabilization:
+    time_trans = time.time()
+    psi_trans = 0.0
+    theta_trans = 0.0
 
-def stabilize(frame, ahrs, coeff):
+    def __init__(self):
+        self.time_trans = time.time()
+        self.psi_trans = 0.0
+        self.theta_trans = 0.0
 
-    time_trans=time.time()
-    psi_trans=0.0
-    theta_trans=0.0
 
+    def stabilize(self, frame, ahrs, coeff):
+        now = time.time()
+        ts = now - self.time_trans
+        self.time_trans = now
+        self.psi_trans += ahrs.R*ts
+        self.psi_trans -= self.psi_trans*coeff
+        self.theta_trans += ahrs.Q*ts
+        self.theta_trans -= self.theta_trans*coeff
 
-    now = time.time()
-    ts = now - time_trans
-    time_trans = now
-    psi_trans += ahrs.R*ts
-    psi_trans -= psi_trans*coeff
-    theta_trans += ahrs.Q*ts
-    theta_trans -= theta_trans*coeff
-
-    frame = translate(frame,psi_trans,theta_trans)
-    res = rotate(frame,-ahrs.phi)
-    return res
+        frame = translate(frame,-self.psi_trans,self.theta_trans)
+        res = rotate(frame,-ahrs.phi)
+        return res
 
