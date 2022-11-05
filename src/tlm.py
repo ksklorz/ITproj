@@ -28,3 +28,9 @@ class dataAHRS:
     accX: float = 0.0
     accY: float = 0.0
     accZ: float = 0.0
+
+@dataclass
+class controlData:
+    on: bool = True
+    up: float = 0.0
+    right: float = 0.0

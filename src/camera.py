@@ -5,7 +5,6 @@ from globals import *
 from cam import video_lib
 import tlm
 
-
 def camThread():
     URL = "http://192.168.137.77"
     AWB = True
@@ -15,7 +14,8 @@ def camThread():
     cap = cv2.VideoCapture(0)
     cap = cv2.VideoCapture(URL + ":81/stream")
     set_resolution(URL, index=8, verbose=True)
-    stab = video_lib.stabilization
+    stab = video_lib.stabilization()
+    target = video_lib.targetInd()
 
     while True:
         while not udpRecQue.empty():
@@ -26,11 +26,13 @@ def camThread():
 
 
         if cap.isOpened():
-            ret, frame = cap.read()
-            frame = hud.drawHor(frame,-theta,-phi)
-            if stabCoeff.isStab:
-                frame = stab.stabilize(stab,frame,ahrs,stabCoeff.coeff)
-            cv2.imshow("frame", frame)
+                ret, frame = cap.read()
+                frame = hud.drawHor(frame,-theta,-phi)
+                if stabCoeff.isStab:
+                        frame = stab.stabilize(frame,ahrs,stabCoeff.coeff)
+                frame = target.refresh(frame)
+
+                cv2.imshow("frame", frame)
             
         key = cv2.waitKey(1)
 

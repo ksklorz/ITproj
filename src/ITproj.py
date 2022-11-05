@@ -3,6 +3,7 @@ import threading
 import queue
 import camera
 import udp_rec
+import controller
 
 from globals import *
 
@@ -14,10 +15,12 @@ def main():
     guiThread = threading.Thread(target=gui.threadGUI)
     camThread = threading.Thread(target=camera.camThread)
     udpRecThread = threading.Thread(target=udp_rec.udpRecThread)
-    
+    conThread = threading.Thread(target= controller.controllerTread)
+
     guiThread.start()
     camThread.start()
     udpRecThread.start()
+    conThread.start()
 
     while True:
         message = cmdGui.get()

@@ -3,6 +3,7 @@ import cv2
 import cmath
 import numpy as np
 import time
+from globals import *
 
 
 def set_resolution(url: str, index: int=1, verbose: bool=False):
@@ -54,10 +55,6 @@ def translate(frame, psi, theta):
     ], dtype=np.float32)
     return cv2.warpAffine(frame,M,(w,h))
 class stabilization:
-    time_trans = time.time()
-    psi_trans = 0.0
-    theta_trans = 0.0
-
     def __init__(self):
         self.time_trans = time.time()
         self.psi_trans = 0.0
@@ -77,3 +74,39 @@ class stabilization:
         res = rotate(frame,-ahrs.phi)
         return res
 
+class targetInd:
+    def __init__(self):
+        self.x = 0.0
+        self.y = 0.0
+        self.w = .1
+        self.h = self.w 
+    
+    def move(self, dx, dy):
+        self.x += dx
+        self.y += dy
+        self.x = min(self.x,1.0)
+        self.x = max(self.x,-1.0)
+        self.y = min(self.y,1.0)
+        self.y = max(self.y,-1.0)
+
+    def show(self, frame):
+        (h, w) = frame.shape[:2]
+        w = float(w)/2.0
+        h = float(h)/2.0
+        mX = w*self.x + w
+        mY = h*self.y + h
+        
+        startP = (int(mX + self.w*w), int(mY + self.h*h))
+        endP = (int(mX - self.w*w), int(mY - self.h*h))
+
+        frame = cv2.rectangle(frame, startP, endP, (0,0,255), 2)
+        return frame
+
+    def refresh(self, frame):
+            coeff = .1
+            while not conVidQue.empty():
+                data = conVidQue.get()
+                if data.on:
+                    self.move(data.up*coeff, data.right*coeff)
+                
+            return self.show(frame)
