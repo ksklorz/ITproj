@@ -25,13 +25,21 @@ def controllerTread():
         for joystick in joysticks.values():
             xAxis = joystick.get_axis(2)
             yAxis = joystick.get_axis(3)
+
+            xAxisB = joystick.get_axis(0)
+            yAxisB = joystick.get_axis(1)
             # print(xAxis)
             # print(yAxis)
 
-        vidSet = tlm.controlData(True, xAxis, yAxis)          
-        conVidQue.put(vidSet)
+        vidSet = tlm.controlData(True, xAxis, yAxis)  
+        if not conVidQue.full():        
+            conVidQue.put(vidSet)
 
-        clock.tick(25)
+        cmdSet = tlm.controlData(True, xAxisB, yAxisB)          
+        if not udpSendQue.full():
+            udpSendQue.put(cmdSet)
+
+        clock.tick(100)
 
 #################### 
 # testowe:
