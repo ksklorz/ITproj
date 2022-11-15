@@ -103,7 +103,7 @@ class targetInd:
         return frame
 
     def refresh(self, frame):
-            coeff = .1
+            coeff = .03
             while not conVidQue.empty():
                 data = conVidQue.get()
                 if data.on:

@@ -26,8 +26,8 @@ def controllerTread():
             xAxis = joystick.get_axis(2)
             yAxis = joystick.get_axis(3)
 
-            xAxisB = joystick.get_axis(0)
-            yAxisB = joystick.get_axis(1)
+            xAxisB = -joystick.get_axis(1)
+            yAxisB = joystick.get_axis(0)
             # print(xAxis)
             # print(yAxis)
 
@@ -45,9 +45,6 @@ def controllerTread():
 # testowe:
 ####################
 pygame.init()
-# This is a simple class that will help us print to the screen.
-# It has nothing to do with the joysticks, just outputting the
-# information.
 class TextPrint:
     def __init__(self):
         self.reset()
