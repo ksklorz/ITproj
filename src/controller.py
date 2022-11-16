@@ -28,10 +28,13 @@ def controllerTread():
 
             xAxisB = -joystick.get_axis(1)
             yAxisB = joystick.get_axis(0)
+
+            track = joystick.get_button(7)
+            stopTrack = joystick.get_button(5)
             # print(xAxis)
             # print(yAxis)
 
-        vidSet = tlm.controlData(True, xAxis, yAxis)  
+        vidSet = tlm.controlData(track, xAxis, yAxis)  
         if not conVidQue.full():        
             conVidQue.put(vidSet)
 

@@ -11,7 +11,7 @@ def camThread():
     phi=0
     theta=0
     ahrs = tlm.dataAHRS(0,0,0,0,0,0,0,0,0,0)
-    cap = cv2.VideoCapture(0)
+#     cap = cv2.VideoCapture(0)
     cap = cv2.VideoCapture(URL + ":81/stream")
     set_resolution(URL, index=8, verbose=True)
     stab = video_lib.stabilization()
@@ -27,7 +27,7 @@ def camThread():
 
         if cap.isOpened():
                 ret, frame = cap.read()
-                frame = hud.drawHor(frame,-theta,-phi)
+                # frame = hud.drawHor(frame,-theta,-phi)
                 if stabCoeff.isStab:
                         frame = stab.stabilize(frame,ahrs,stabCoeff.coeff)
                 frame = target.refresh(frame)

@@ -9,6 +9,7 @@ conVidQue = queue.Queue(maxsize= 50)
 
 
 
+
 class stabCoeff:
     isStab = False
     coeff = .5

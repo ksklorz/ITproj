@@ -4,6 +4,7 @@ import cmath
 import numpy as np
 import time
 from globals import *
+from cam import tracker
 
 
 def set_resolution(url: str, index: int=1, verbose: bool=False):
@@ -78,18 +79,20 @@ class targetInd:
     def __init__(self):
         self.x = 0.0
         self.y = 0.0
-        self.w = .1
-        self.h = self.w 
+        self.w = .07
+        self.h = self.w /3.0*4.0
+        self.track = tracker.tracker()
+        self.isTracking = False
     
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
-        self.x = min(self.x,1.0)
-        self.x = max(self.x,-1.0)
-        self.y = min(self.y,1.0)
-        self.y = max(self.y,-1.0)
+        self.x = min(self.x,1.0-self.w)
+        self.x = max(self.x,-1.0+self.w)
+        self.y = min(self.y,1.0-self.h)
+        self.y = max(self.y,-1.0+self.h)
 
-    def show(self, frame):
+    def show(self, track, frame):
         (h, w) = frame.shape[:2]
         w = float(w)/2.0
         h = float(h)/2.0
@@ -99,14 +102,57 @@ class targetInd:
         startP = (int(mX + self.w*w), int(mY + self.h*h))
         endP = (int(mX - self.w*w), int(mY - self.h*h))
 
-        frame = cv2.rectangle(frame, startP, endP, (0,0,255), 2)
+        if True:#not track:
+            frame = cv2.rectangle(frame, startP, endP, (0,255,0), 2)
+        # else:
+        #     frame = cv2.rectangle(frame, startP, endP, (0,255,0), 2)
+        
         return frame
 
     def refresh(self, frame):
-            coeff = .03
+            coeff = .015
+            track = False
             while not conVidQue.empty():
                 data = conVidQue.get()
+
                 if data.on:
-                    self.move(data.up*coeff, data.right*coeff)
+                    self.isTracking = True
+                    bbox = self.getbbox(frame)
+                    self.track.setTarget(frame,bbox)
+                # else:
+                self.move(data.up*coeff, data.right*coeff)
+                    # track = data.on
                 
-            return self.show(frame)
+            if self.isTracking:
+                track, bbox = self.track.update(frame)
+                # if track:
+                #     self.movebbox(frame,bbox)
+                self.isTracking = track
+
+            return self.show(self.isTracking, frame)
+
+    def getbbox(self,frame):
+        (h, w) = frame.shape[:2]
+        w = float(w)/2.0
+        h = float(h)/2.0
+        mX = w*self.x + w
+        mY = h*self.y + h
+        L = int(mX-self.w*w)
+        D = int(mY-self.h*h)
+        WW = int(2*self.w*w)
+        HH = int(2*self.h*h)
+        bbox = (L,D,WW, HH)
+        return bbox
+
+    def movebbox(self,frame,bbox):
+        (h, w) = frame.shape[:2]
+        
+        # (L,D,W,H) = bbox
+        L= bbox[0]
+        D = bbox[1]
+        W = bbox[2]
+        H = bbox[3]
+        self.x = L/w
+        self.h = D/h
+        self.w = W/w
+        self.h = H/h
