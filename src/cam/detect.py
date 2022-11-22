@@ -22,7 +22,8 @@ def recognition(frame):
     # frame = cv2.resize(frame, (0,0), None, 0.25,0.25)
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     facesCurFrame = face_recognition.face_locations(frame)
-    encodesCurFrame = face_recognition.face_encodings(frame,facesCurFrame)
+    #encodesCurFrame = face_recognition.face_encodings(frame,facesCurFrame)
+    encodesCurFrame = 0
     return facesCurFrame, encodesCurFrame
 
 def identification(encodeFace, knownFaces):
@@ -30,3 +31,7 @@ def identification(encodeFace, knownFaces):
     faceDis = face_recognition.face_distance(knownFaces,encodeFace)
     matchIndex = np.argmin(faceDis)
     return matchIndex, matches[matchIndex]
+
+def drawRec(frame, loc, col):
+    y1,x2,y2,x1 = loc
+    cv2.rectangle(frame,(x1,y1),(x2,y2),col,2)

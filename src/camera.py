@@ -4,6 +4,7 @@ from cam.video_lib import *
 from globals import *
 from cam import video_lib
 import tlm
+from cam import detect
 
 def camThread():
     URL = "http://192.168.137.77"
@@ -11,9 +12,9 @@ def camThread():
     phi=0
     theta=0
     ahrs = tlm.dataAHRS(0,0,0,0,0,0,0,0,0,0)
-#     cap = cv2.VideoCapture(0)
-    cap = cv2.VideoCapture(URL + ":81/stream")
-    set_resolution(URL, index=8, verbose=True)
+    cap = cv2.VideoCapture(0)
+#     cap = cv2.VideoCapture(URL + ":81/stream")
+#     set_resolution(URL, index=8, verbose=True)
     stab = video_lib.stabilization()
     target = video_lib.targetInd()
 
@@ -30,9 +31,18 @@ def camThread():
                 # frame = hud.drawHor(frame,-theta,-phi)
                 if stabCoeff.isStab:
                         frame = stab.stabilize(frame,ahrs,stabCoeff.coeff)
-                frame = target.refresh(frame)
+                        # frame2 = frame
+                if (isRecognizing):
+                        facesCurFrame, encodesCurFrame = detect.recognition(frame)
+                        # for encodeFace,faceLoc in zip(encodesCurFrame,facesCurFrame):
+                        for faceLoc in facesCurFrame:
+                                detect.drawRec(frame, faceLoc, (0,255,0))
+                
+                frame2 = target.refresh(frame)
 
-                cv2.imshow("frame", frame)
+                
+
+                cv2.imshow("frame", frame2)
             
         key = cv2.waitKey(1)
 
