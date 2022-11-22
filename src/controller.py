@@ -22,6 +22,13 @@ def controllerTread():
                     joysticks[joy.get_instance_id()] = joy
                     print(f"Joystick {joy.get_instance_id()} connencted")
     
+        track = 0
+        xAxis = 0
+        yAxis = 0
+        xAxisB = 0
+        yAxisB = 0
+        vidSet = 0
+
         for joystick in joysticks.values():
             xAxis = joystick.get_axis(2)
             yAxis = joystick.get_axis(3)
@@ -33,8 +40,8 @@ def controllerTread():
             stopTrack = joystick.get_button(5)
             # print(xAxis)
             # print(yAxis)
+            vidSet = tlm.controlData(track, xAxis, yAxis)  
 
-        vidSet = tlm.controlData(track, xAxis, yAxis)  
         if not conVidQue.full():        
             conVidQue.put(vidSet)
 

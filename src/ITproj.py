@@ -19,7 +19,7 @@ def main():
     conThread = threading.Thread(target= controller.controllerTread)
     udpSendThread = threading.Thread(target= udpSend.udpSendThread)
 
-    # guiThread.start()
+    guiThread.start()
     camThread.start()
     udpRecThread.start()
     conThread.start()

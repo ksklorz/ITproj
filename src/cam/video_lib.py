@@ -71,7 +71,7 @@ class stabilization:
         self.theta_trans += ahrs.Q*ts
         self.theta_trans -= self.theta_trans*coeff
 
-        frame = translate(frame,-self.psi_trans,self.theta_trans)
+        frame = translate(frame,self.psi_trans,-self.theta_trans)
         res = rotate(frame,-ahrs.phi)
         return res
 
