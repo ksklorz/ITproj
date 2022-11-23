@@ -18,6 +18,8 @@ def camThread():
     stab = video_lib.stabilization()
     target = video_lib.targetInd()
 
+    encodeListKnown, names = detect.importPhoto()
+
     while True:
         while not udpRecQue.empty():
             ahrs = udpRecQue.get()
@@ -33,14 +35,22 @@ def camThread():
                         frame = stab.stabilize(frame,ahrs,stabCoeff.coeff)
                         # frame2 = frame
                 if (isRecognizing):
-                        facesCurFrame, encodesCurFrame = detect.recognition(frame)
-                        # for encodeFace,faceLoc in zip(encodesCurFrame,facesCurFrame):
+                        facesCurFrame, encodesCurFrame = detect.recognition(frame, isIdent)
                         for faceLoc in facesCurFrame:
                                 detect.drawRec(frame, faceLoc, (0,255,0))
+                        if isIdent:
+                                for encodeFace,faceLoc in zip(encodesCurFrame,facesCurFrame):
+                        
+                                        id, tar = detect.identification(encodeFace, encodeListKnown)
+                                        if tar:
+                                                text = names[id].upper()
+                                                print (text)
+                                                detect.drawRec(frame,faceLoc,(255,0,0))
+                                                # targetSet, tracker = setTarget(frame, faceLoc)
+                                                break        
                 
-                frame2 = target.refresh(frame)
-
-                
+                # frame2 = target.refresh(frame)
+                frame2 = frame
 
                 cv2.imshow("frame", frame2)
             

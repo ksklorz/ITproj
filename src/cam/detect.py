@@ -1,6 +1,7 @@
 import cv2
 import face_recognition
 import numpy as np
+import os
 
 def getFile(path):
     DATA = []
@@ -9,6 +10,16 @@ def getFile(path):
             data = line.strip().split(";")
             DATA.append(data)
     return DATA
+
+def getImages(path, lines):
+    images = []
+    names = []
+    for person in lines:
+        photo = person[0]
+        curImg = cv2.imread(path+photo)
+        images.append(curImg)
+        names.append(person[1])
+    return images, names
     
 def findEncodings(images):
     encodelist= []
@@ -18,12 +29,14 @@ def findEncodings(images):
         encodelist.append(encode)
     return encodelist
 
-def recognition(frame):
+def recognition(frame, encode):
     # frame = cv2.resize(frame, (0,0), None, 0.25,0.25)
     frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     facesCurFrame = face_recognition.face_locations(frame)
-    #encodesCurFrame = face_recognition.face_encodings(frame,facesCurFrame)
-    encodesCurFrame = 0
+    if encode:
+        encodesCurFrame = face_recognition.face_encodings(frame,facesCurFrame)
+    else:
+        encodesCurFrame = []
     return facesCurFrame, encodesCurFrame
 
 def identification(encodeFace, knownFaces):
@@ -35,3 +48,13 @@ def identification(encodeFace, knownFaces):
 def drawRec(frame, loc, col):
     y1,x2,y2,x1 = loc
     cv2.rectangle(frame,(x1,y1),(x2,y2),col,2)
+
+
+def importPhoto():
+    # path = os.getcwd()
+    path = "data\\"
+    lines = getFile(path + "data.txt")
+    images, names = getImages(path, lines)
+    encodeList = findEncodings(images)
+    print('Encoding Complete')
+    return encodeList, names

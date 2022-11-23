@@ -8,6 +8,7 @@ udpSendQue = queue.Queue(maxsize= 20)
 conVidQue = queue.Queue(maxsize= 50)
 
 isRecognizing = True
+isIdent = True
 
 
 class stabCoeff:
