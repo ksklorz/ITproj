@@ -12,9 +12,9 @@ def camThread():
     phi=0
     theta=0
     ahrs = tlm.dataAHRS(0,0,0,0,0,0,0,0,0,0)
-    cap = cv2.VideoCapture(0)
-#     cap = cv2.VideoCapture(URL + ":81/stream")
-#     set_resolution(URL, index=8, verbose=True)
+#     cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(URL + ":81/stream")
+    set_resolution(URL, index=8, verbose=True)
     stab = video_lib.stabilization()
     target = video_lib.targetInd()
 
