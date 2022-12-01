@@ -5,6 +5,7 @@ import numpy as np
 import time
 from globals import *
 from cam import tracker
+import tlm
 
 
 def set_resolution(url: str, index: int=1, verbose: bool=False):
@@ -153,6 +154,11 @@ class targetInd:
         W = bbox[2]
         H = bbox[3]
         self.x = L/w
-        self.h = D/h
+        self.y = D/h
         self.w = W/w
         self.h = H/h
+
+    def targetSend(self):
+        cmd=tlm.controlData(False, self.x, self.y)
+        if not udpSendQue.full():
+            udpSendQue.put(cmd)
