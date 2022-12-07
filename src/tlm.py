@@ -34,3 +34,18 @@ class controlData:
     on: bool = True
     up: float = 0.0
     right: float = 0.0
+
+@dataclass
+class frame:
+    cmd: uint8 = 0
+    x: float = 0.0
+    y: float = 0.0
+    crc: uint8 = 0
+
+def prepareControl(input):
+    data = controlData
+    data.cmd = 1
+    data.x = input.up
+    data.y = input.right
+    data.crc = 0
+    return data

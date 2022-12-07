@@ -47,7 +47,8 @@ def controllerTread():
 
         cmdSet = tlm.controlData(True, xAxisB, yAxisB)          
         if not udpSendQue.full():
-            udpSendQue.put(cmdSet)
+            data = tlm.prepareControl(cmdSet)
+            udpSendQue.put(data)
 
         clock.tick(100)
 

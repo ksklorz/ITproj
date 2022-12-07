@@ -23,7 +23,7 @@ def main():
     camThread.start()
     # udpRecThread.start()
     # conThread.start()
-    # udpSendThread.start()
+    udpSendThread.start()
 
     while True:
         message = cmdGui.get()
