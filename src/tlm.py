@@ -14,7 +14,8 @@ class tlmAHRS:
     accX: int16 = 0
     accY: int16 = 0
     accZ: int16 = 0
-    smiec: int16 = 0 #?????
+    range: int16 = 0
+    # smiec: int16 = 0 #?????
 
 @dataclass
 class dataAHRS:
@@ -28,6 +29,7 @@ class dataAHRS:
     accX: float = 0.0
     accY: float = 0.0
     accZ: float = 0.0
+    range: float = 0.0
 
 @dataclass
 class controlData:

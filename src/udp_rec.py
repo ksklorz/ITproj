@@ -25,5 +25,5 @@ def decodeLine(line):
     bytes = base64.b64decode(line)
     dataI = struct.unpack('@Lhhhhhhhhhh',bytes)
     dataI = tlm.tlmAHRS(dataI[0], dataI[1], dataI[2], dataI[3], dataI[4], dataI[5], dataI[6], dataI[7], dataI[8], dataI[9], dataI[10])
-    dataF = tlm.dataAHRS(float(dataI.time)/10000.0,float(dataI.phi)/10000.0,float(dataI.theta)/10000.0,float(dataI.psi)/10000.0,float(dataI.P)/10000.0,float(dataI.Q)/10000.0,float(dataI.R)/10000.0,float(dataI.accX)/10000.0,float(dataI.accY)/10000.0,float(dataI.accZ)/10000.0 )
+    dataF = tlm.dataAHRS(float(dataI.time)/10000.0,float(dataI.phi)/10000.0,float(dataI.theta)/10000.0,float(dataI.psi)/10000.0,float(dataI.P)/10000.0,float(dataI.Q)/10000.0,float(dataI.R)/10000.0,float(dataI.accX)/10000.0,float(dataI.accY)/10000.0,float(dataI.accZ)/10000.0,float(dataI.range) )
     return dataF

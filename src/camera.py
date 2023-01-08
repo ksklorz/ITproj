@@ -48,12 +48,30 @@ def camThread():
                                                 # targetSet, tracker = setTarget(frame, faceLoc)
                                                 break        
                 
-                frame2 = target.refresh(frame)
+                frame = target.refresh(frame)
+
                 if stabCoeff.isStab:
                         frame2 = stab.stabilize(frame2,ahrs,stabCoeff.coeff)
+
+                font                   = cv2.FONT_HERSHEY_SIMPLEX
+                bottomLeftCornerOfText = (30,30)
+                fontScale              = 1
+                fontColor              = (255,255,255)
+                thickness              = 1
+                lineType               = 2
+
+                if (ahrs.range < 2000):
+                        cv2.putText(frame,str(ahrs.range), 
+                        bottomLeftCornerOfText, 
+                        font, 
+                        fontScale,
+                        fontColor,
+                        thickness,
+                        lineType)     
+                # frame2 = cv2.putText(frame2, str(ahrs.range), (50,50), 1, cv2.FONT_HERSHEY_SIMPLEX, (0,0,255), 2)
                 # frame2 = frame
 
-                cv2.imshow("frame", frame2)
+                cv2.imshow("frame", frame)
             
         key = cv2.waitKey(1)
 
