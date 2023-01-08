@@ -12,12 +12,7 @@ import crc8
 
 
 
-@dataclass
-class frame:
-    cmd: uint8 = 0
-    x: float = 0.0
-    y: float = 0.0
-    crc: uint8 = 0
+
 
 
 def udpSendThread():
@@ -36,13 +31,7 @@ def udpSendThread():
             print("socket kaput");
 
 def encodeCmdLine(data):
-    tel = struct.pack('@BffB',data.cmd, data.x, data.y, data.crc)
+    tel = struct.pack('@BffBB',data.cmd, data.x, data.y, data.cnt, data.crc)
     line = base64.b64encode(tel)
     return line
 
-def prepareControl(input):
-    data = tlm.controlData
-    data.cmd = 1
-    data.x = input.up
-    data.y = input.right
-    data.crc = 0

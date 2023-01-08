@@ -21,13 +21,13 @@ def main():
 
     # guiThread.start()
     camThread.start()
-    # udpRecThread.start()
-    # conThread.start()
+    udpRecThread.start()
+    conThread.start()
     udpSendThread.start()
 
-    while True:
-        message = cmdGui.get()
-        print(message)
+    # while True:
+    #     message = cmdGui.get()
+    #     print(message)
 
 if __name__ == "__main__":
     main()

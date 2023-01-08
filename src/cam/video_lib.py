@@ -159,6 +159,7 @@ class targetInd:
         self.h = H/h
 
     def targetSend(self):
-        cmd=tlm.controlData(False, self.x, self.y)
+        cmd=tlm.trackData(False, self.x, self.y)
+        cmd=tlm.prepareControl(cmd)
         if not udpSendQue.full():
             udpSendQue.put(cmd)

@@ -36,6 +36,12 @@ class controlData:
     right: float = 0.0
 
 @dataclass
+class trackData:
+    on: bool = True
+    pitch: float = 0.0
+    yaw: float = 0.0
+
+@dataclass
 class frame:
     cmd: uint8 = 0
     x: float = 0.0
@@ -47,5 +53,15 @@ def prepareControl(input):
     data.cmd = 1
     data.x = input.up
     data.y = input.right
+    data.cnt = 0
+    data.crc = 0
+    return data
+
+def prepareTracking(input):
+    data = trackData
+    data.cmd = 2
+    data.x = input.pitch
+    data.y = input.yaw
+    data.cnt = 1
     data.crc = 0
     return data

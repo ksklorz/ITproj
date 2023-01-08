@@ -18,7 +18,7 @@ def camThread():
     stab = video_lib.stabilization()
     target = video_lib.targetInd()
 
-    encodeListKnown, names = detect.importPhoto()
+#     encodeListKnown, names = detect.importPhoto()
 
     while True:
         while not udpRecQue.empty():
@@ -31,8 +31,7 @@ def camThread():
         if cap.isOpened():
                 ret, frame = cap.read()
                 # frame = hud.drawHor(frame,-theta,-phi)
-                if stabCoeff.isStab:
-                        frame = stab.stabilize(frame,ahrs,stabCoeff.coeff)
+
                         # frame2 = frame
                 if (isRecognizing):
                         facesCurFrame, encodesCurFrame = detect.recognition(frame, isIdent)
@@ -49,8 +48,10 @@ def camThread():
                                                 # targetSet, tracker = setTarget(frame, faceLoc)
                                                 break        
                 
-                # frame2 = target.refresh(frame)
-                frame2 = frame
+                frame2 = target.refresh(frame)
+                if stabCoeff.isStab:
+                        frame2 = stab.stabilize(frame2,ahrs,stabCoeff.coeff)
+                # frame2 = frame
 
                 cv2.imshow("frame", frame2)
             

@@ -45,7 +45,7 @@ def controllerTread():
         if not conVidQue.full():        
             conVidQue.put(vidSet)
 
-        cmdSet = tlm.controlData(True, xAxisB, yAxisB)          
+        cmdSet = tlm.controlData(True, xAxisB, yAxisB*.3)          
         if not udpSendQue.full():
             data = tlm.prepareControl(cmdSet)
             udpSendQue.put(data)
