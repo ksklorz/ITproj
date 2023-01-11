@@ -12,14 +12,14 @@ import crc8
 
 
 
-
+UDP_IP = "192.168.137.66"
+UDP_PORT = 31337
+BIND_IP = "192.168.137.1"
 
 
 def udpSendThread():
-    UDP_IP = "192.168.137.66"
-    UDP_PORT = 31337
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.bind(("192.168.137.1", 2222))
+    sock.bind((BIND_IP, 2222))
     sock.connect((UDP_IP, UDP_PORT))
     
     while True:
@@ -28,7 +28,8 @@ def udpSendThread():
         try:
             sock.send(line)
         except:
-            print("socket kaput");
+            print("socket error");
+
 
 def encodeCmdLine(data):
     tel = struct.pack('@BffBB',data.cmd, data.x, data.y, data.cnt, data.crc)

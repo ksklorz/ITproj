@@ -7,10 +7,9 @@ import tlm
 
 from globals import *
 
-
+UDP_REC_PORT = 31338
 
 def udpRecThread():
-    UDP_REC_PORT = 31338
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # Internet  # UDP
     # sock.connect((UDP_IP, UDP_PORT))
     sock.bind(('', UDP_REC_PORT))
