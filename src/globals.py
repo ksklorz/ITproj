@@ -12,7 +12,7 @@ isIdent = False
 
 
 class stabCoeff:
-    isStab = False
+    isStab = True
     coeff = .5
     def __init__(self):
         self.isStab = False

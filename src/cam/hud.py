@@ -18,6 +18,40 @@ def drawHor(frame, theta, phi):
     cv2.line(frame,p1,p2,(0,255,0),3)
     return frame
 
+def drawRange(frame, range):
+    height, width, channels = frame.shape
+    L = 12
+    R = 28
+    B = 50
+    Um = height - B
+    min = 50
+    max = 1000
+    if (range > 1000):
+        range=1000
+    if (range < 50):
+        range=50
+
+    U = int((Um-B)*range/(max-min))
+    color = (0, int(range/(max-min)*255), 255-int(range/(max-min)*255))
+    frame = cv2.rectangle(frame, (L,B), (R, U), color, -1)
+    return frame
+
+def drawState(frame,state):
+    height, width, channels = frame.shape
+    text = ''
+    if (state == 0x01):
+        text = 'MAN'
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    org = (width-150, height-50)
+    fontScale = 1
+    color = (255, 0, 0)
+    thickness = 2
+    frame = cv2.putText(frame, text, org, font, fontScale, color, thickness, cv2.LINE_AA)
+    return frame
+        
+
+
+
 
 @dataclass
 class tlmAHRS:
